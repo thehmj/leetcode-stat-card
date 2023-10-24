@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>LeetCode-like UI</title>
+</head>
+
+<body>
+    <div class="cardsetting" >
+        <div class="card" id="cardsetting">
+            <div>LeetCode</div>
+            <div class="cardmain">
+                <div class="cardleft ">
+                    <div class="svg">
+                        <svg class="svgleft" viewBox="0 0 100 100">
+                            <circle fill="none" cx="50px" cy="50px" r="46" stroke-width="3" stroke-linecap="round"
+                                stroke="currentColor" class="svgleft1"></circle>
+                            <circle id="totalprogressbar" fill="none" cx="50px" cy="50px" r="46" stroke-width="5" stroke-linecap="round"
+                                stroke="currentColor" class="svgleft2"
+                                stroke-dasharray="157.70772517771894" stroke-dashoffset="0"
+                                data-difficulty="ALL"></circle>
+                        </svg>
+                        <div class="svgright">
+                            <div>
+                                <div style="font-size: 20px; font-weight: 600;" id="totalsolved">0</div>
+                                <div style="font-size: 10px; font-weight: 300; text-align: center;">
+                                    Solved</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cardright">
+                    <div class="cardrightcontent">
+                        <div class="wrapper">
+                            <div class="level">Easy</div>
+                            <div class="levelspace">
+                                <span class="attempt" id="easyattempt">0</span>
+                                <span class="total" id="easytotal">/0</span>
+                            </div>
+                            <!-- <div class="progress">
+                                <span style="margin-left: .375rem;">
+                                    <span> Beats </span>
+                                    <span class="beats" id="easybeat">82.9%</span>
+                                </span>
+                            </div> -->
+                        </div>
+                        <div class="bar">
+                            <div class="barback easy" id="easyprogressbarback" style="background-color: #2db55d26;"></div>
+                            <div class="barslide" id="easyprogressbar" style="background-color:  rgb(0 175 155);"></div>
+                        </div>
+                    </div>
+
+                    <div class="cardrightcontent">
+                        <div class="wrapper">
+                            <div class="level">Medium</div>
+                            <div class="levelspace">
+                                <span class="attempt" id="mediumattempt">0</span>
+                                <span class="total" id="mediumtotal">/0</span>
+                            </div>
+                            <!-- <div class="progress">
+                                <span style="margin-left: .375rem;">
+                                    <span> Beats </span>
+                                    <span class="beats" id="mediumbeat">82.9%</span>
+                                </span>
+                            </div> -->
+                        </div>
+                        <div class="bar">
+                            <div class="barback easy" id="mediumprogressbarback" style="background-color:  #ffb80026;"></div>
+                            <div class="barslide" id="mediumprogressbar" style=" background-color: rgb(255 184 0);"></div>
+                        </div>
+                    </div>
+
+                    <div class="cardrightcontent">
+                        <div class="wrapper">
+                            <div class="level">Hard</div>
+                            <div class="levelspace">
+                                <span class="attempt" id="hardattempt">0</span>
+                                <span class="total" id="hardtotal">/0</span>
+                            </div>
+                            <!-- <div class="progress">
+                                <span style="margin-left: .375rem;">
+                                    <span> Beats </span>
+                                    <span class="beats" id="hardbeat">82.9%</span>
+                                </span>
+                            </div> -->
+                        </div>
+                        <div class="bar">
+                            <div class="barback easy" id="hardprogressbarback" style="background-color: #ef474326;"></div>
+                            <div class="barslide" id="hardprogressbar" style=" background-color: rgb(239 71 67);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    async function akpa() {
+        const queryString = window.location.search;
+        console.log(queryString);
+        var opacity = 1;
+        const urlParams = new URLSearchParams(queryString);
+        const userid = urlParams.get('username');
+        const theme = urlParams.get('theme');
+        console.log(theme);
+        if (theme =='dark') {
+            opacity = 1;  
+           document.getElementById("cardsetting").style.color ="#fff";
+           document.getElementById("cardsetting").style.backgroundColor ="#000";
+           document.getElementById("easyattempt").style.color = "#B4B4B4";
+           document.getElementById("mediumattempt").style.color =  "#B4B4B4";
+           document.getElementById("hardattempt").style.color =  "#B4B4B4";
+           document.getElementById("easytotal").style.color =  "#c3c3bcb2";
+           document.getElementById("mediumtotal").style.color =  "#c3c3bcb2";
+           document.getElementById("hardtotal").style.color= "#c3c3bcb2";
+           document.getElementById("easyprogressbar").style.backgroundColor =  "#ff5064";
+           document.getElementById("mediumprogressbar").style.backgroundColor = "#0047ff" ;
+           document.getElementById("hardprogressbar").style.backgroundColor =  "#10b8bc" ;
+           document.getElementById("easyprogressbarback").style.backgroundColor =  "#d24aa226" ;
+           document.getElementById("mediumprogressbarback").style.backgroundColor =  "#0047ff26" ;
+           document.getElementById("hardprogressbarback").style.backgroundColor =  "#10b8bc26" ;
+
+
+        }
+        const a = await fetch(`https://leetcode-stats-api.herokuapp.com/${userid}`,
+            {
+                method: "get"
+            })
+        const data = await a.json();
+      
+           document.getElementById("totalsolved").innerText = data.totalSolved;
+           document.getElementById("totalprogressbar").style.strokeDasharray = (data.totalSolved * 289.14)/data.totalQuestions + " " + (289.14 - (data.totalSolved * 289.14)/data.totalQuestions) ;
+           document.getElementById("easyattempt").innerText = data.easySolved;
+           document.getElementById("mediumattempt").innerText = data.mediumSolved;
+           document.getElementById("hardattempt").innerText = data.hardSolved;
+           document.getElementById("easytotal").innerText = "/ "+ data.totalEasy;
+           document.getElementById("mediumtotal").innerText = "/ "+data.totalMedium;
+           document.getElementById("hardtotal").innerText ="/ "+ data.totalHard;
+           document.getElementById("easyprogressbar").style.width =  ((data.easySolved *100 )/data.totalEasy) +"%";
+           document.getElementById("mediumprogressbar").style.width =  ((data.mediumSolved *100 )/data.totalMedium) +"%";
+           document.getElementById("hardprogressbar").style.width =  ((data.hardSolved *100 )/data.totalHard) +"%";
+
+
+
+           
+    }
+    akpa();
+
+    const darktheme =(color)=>{
+    var ansstring =""; 
+    for (let i = 0; i < color.length; i++) {
+        if (i>5) {
+            break;
+        }
+        switch (color.charAt(i)) {
+            case '0':ansstring +='f';break;
+            case '1':ansstring +='e';break;
+            case '2':ansstring +='d';break;
+            case '3':ansstring +="c";break;
+            case '4':ansstring +='b';break;
+            case '5':ansstring +='a';break;
+            case '6':ansstring +='9';break;
+            case '7':ansstring +='8';break;
+            case '8':ansstring +='7';break;
+            case '9':ansstring +='6';break;
+            case 'a':ansstring +='5';break;
+            case 'b':ansstring +='4';break;
+            case 'c':ansstring +='3';break;
+            case 'd':ansstring +='2';break;
+            case 'e':ansstring +='1';break;
+            case 'f':ansstring +='0';break;
+            case 'A':ansstring +='5';break;
+            case 'B':ansstring +='4';break;
+            case 'C':ansstring +='3';break;
+            case 'D':ansstring +='2';break;
+            case 'E':ansstring +='1';break;
+            case 'F':ansstring +='0';break;
+            default: break;
+        }   
+    }
+    return ansstring;
+}
+console.log(darktheme("2db55d26"));
+</script>
+
+</html>
