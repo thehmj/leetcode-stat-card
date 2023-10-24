@@ -11,8 +11,8 @@
   https://thehmj.github.io/leetcode-stat-card/?username=<userid>&theme=dark
 ```
 ### iframe 
-- Default theme light
-- Dark theme
+- min-width 390
+- min-height 220
 ```bash
     <iframe class="leetcodestat" src="https://thehmj.github.io/leetcode-stat-card/?username=<userid>&theme=dark" width="390" height="220" frameborder="0"></iframe>
 ```
